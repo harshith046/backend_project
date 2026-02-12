@@ -1,4 +1,4 @@
-# Task Management System - Backend API
+# Task Management System
 
 ## Project Overview
 This is a secure, scalable RESTful API built with Node.js, Express, and PostgreSQL. It was designed to handle user authentication, role-based access control (RBAC), and efficient task management.
