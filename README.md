@@ -8,7 +8,7 @@ The architecture follows the MVC (Model-View-Controller) pattern to ensure separ
 ## Tech Stack
 - **Runtime:** Node.js
 - **Framework:** Express.js
-- **Database:** PostgreSQL (managed via `pg` connection pooling)
+- **Database:** PostgreSQL (managed via `pgAdmin`)
 - **Caching:** Redis (Cache-Aside strategy)
 - **Security:** JWT (JSON Web Tokens), bcryptjs, Helmet, Express-Rate-Limit
 - **Validation:** Express-Validator
