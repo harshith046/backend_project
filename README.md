@@ -34,12 +34,23 @@ The architecture follows the MVC (Model-View-Controller) pattern to ensure separ
 
 ---
 
-## Setup Instructions
+## Project Structure
+The codebase is organized to support modularity and testing:
 
-### Prerequisites
-- Node.js (v18+)
-- PostgreSQL (Local or Docker)
-- Redis Server (Local or Docker)
+```bash
+backend/
+├── src/
+│   ├── config/         # Database (PG) and Redis connection logic
+│   ├── controllers/    # Business logic for Users and Tasks
+│   ├── middleware/     # Auth verification, Caching logic, Error handling
+│   ├── routes/         # API endpoint definitions
+│   ├── app.js          # App configuration and middleware setup
+│   └── swagger.js      # API Documentation configuration
+├── .env                # Environment variables
+└── package.json        # Dependencies and scripts
+```
+
+## Setup Instructions
 
 ### 1. Installation
 Clone the repository and install dependencies:
@@ -47,3 +58,58 @@ Clone the repository and install dependencies:
 git clone <repository-url>
 cd backend
 npm install
+```
+
+### 2. Environment Configuration
+Create a .env file in the root directory and configure your local credentials:
+```bash
+PORT=5000
+DATABASE_URL=postgresql://postgres:yourpassword@localhost:5432/primetrade_db
+JWT_SECRET=your_secure_secret_key
+REDIS_URL=redis://localhost:6379
+NODE_ENV=development
+```
+### 3. Database Schema Setup
+Run the following SQL commands in your PostgreSQL instance to initialize the tables:
+
+Create Users Table:
+```bash
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role VARCHAR(10) DEFAULT 'USER',
+    last_login TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+Create Tasks Table:
+```bash
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    completed BOOLEAN DEFAULT FALSE,
+    due_date TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 4. Running the Application
+Go to the frontend directory and run:
+```bash
+npm run dev
+```
+Go to the backend directory and run:
+```bash
+nodemon src/app.js
+```
+### API Documentation
+The API is fully documented using Swagger UI.
+Once the server is running, navigate to the following URL to test endpoints interactively:
+```bash
+http://localhost:5000/api-docs
+```
